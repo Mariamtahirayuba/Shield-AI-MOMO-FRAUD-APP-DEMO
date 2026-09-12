@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#07101f" />
+  <title>SHIELD AI | Protecting the moment before the money moves</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+    :root { --bg:#050b16; --panel:#0d1728; --panel-2:#111e32; --line:#203149; --text:#f6f8fc; --muted:#91a1b8; --green:#39d98a; --green-dark:#0f3a31; --red:#ff695f; --orange:#ffac5c; --blue:#79aafc; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font-family:'DM Sans', sans-serif; min-height:100vh; }
+    button { font:inherit; cursor:pointer; border:0; color:inherit; }
+    .app-shell { min-height:100vh; display:flex; justify-content:center; background:radial-gradient(circle at 50% -10%, #17345b 0, #081222 36%, var(--bg) 70%); }
+    .phone { width:100%; max-width:500px; min-height:100vh; position:relative; overflow:hidden; background:linear-gradient(180deg, rgba(9,21,39,.72), var(--bg) 32%); }
+    .app-header { display:flex; justify-content:space-between; align-items:center; padding:23px 22px 15px; }
+    .brand { font:700 20px 'Space Grotesk', sans-serif; letter-spacing:.08em; }
+    .brand span { color:var(--green); }
+    .demo-pill { color:#9eb1cb; border:1px solid #30425c; background:#111d2e; padding:6px 9px; border-radius:6px; font-size:10px; letter-spacing:.11em; font-weight:700; }
+    main { padding:0 18px 102px; }
+    .screen { display:none; animation:rise .35s ease both; }
+    .screen.active { display:block; }
+    @keyframes rise { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
+    .eyebrow { color:var(--muted); text-transform:uppercase; font-weight:700; font-size:11px; letter-spacing:.14em; margin:8px 4px 18px; }
+    h1, h2, h3, p { margin:0; }
+    h1 { font:700 30px 'Space Grotesk', sans-serif; line-height:1.06; letter-spacing:-.03em; }
+    h2 { font:700 22px 'Space Grotesk', sans-serif; }
+    h3 { font-size:14px; }
+    .subhead { color:var(--muted); font-size:14px; line-height:1.5; margin-top:8px; }
+    .card { background:linear-gradient(145deg, rgba(19,34,56,.94), rgba(10,20,35,.95)); border:1px solid var(--line); border-radius:18px; box-shadow:0 18px 40px rgba(0,0,0,.14); }
+    .status-card { position:relative; overflow:hidden; padding:24px; margin:18px 0 14px; border-color:#28614e; background:linear-gradient(130deg, #102c31, #0c1a2c 75%); }
+    .status-card:after { content:''; position:absolute; width:150px; height:150px; border:1px solid rgba(57,217,138,.16); border-radius:50%; right:-54px; top:-54px; box-shadow:0 0 0 18px rgba(57,217,138,.04), 0 0 0 38px rgba(57,217,138,.025); }
+    .status-top { display:flex; align-items:center; gap:12px; }
+    .shield-mini { width:37px; height:42px; color:var(--green); }
+    .status-word { color:var(--green); font:700 25px 'Space Grotesk', sans-serif; letter-spacing:.04em; }
+    .status-copy { max-width:285px; margin-top:13px; color:#c1ccdb; font-size:13px; line-height:1.45; }
+    .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:9px; margin-bottom:16px; }
+    .stat { padding:14px 11px; min-height:82px; }
+    .stat-value { font:700 21px 'Space Grotesk', sans-serif; }
+    .stat-label { color:var(--muted); font-size:10px; line-height:1.25; margin-top:7px; }
+    .dot { display:inline-block; width:7px; height:7px; background:var(--green); border-radius:50%; margin-right:4px; box-shadow:0 0 10px var(--green); }
+    .risk-card { padding:18px; border-color:#59422e; background:linear-gradient(130deg, #241d1e, #121b2b); }
+    .risk-heading { color:var(--orange); font-size:11px; font-weight:700; letter-spacing:.12em; }
+    .risk-title { font:700 16px 'Space Grotesk', sans-serif; margin-top:10px; }
+    .number { color:#a9b6c8; margin-top:5px; font-size:14px; letter-spacing:.07em; }
+    .row { display:flex; align-items:center; justify-content:space-between; }
+    .btn { width:100%; border-radius:11px; padding:14px 18px; font-weight:700; letter-spacing:.02em; transition:transform .16s, filter .16s; }
+    .btn:active { transform:scale(.98); }
+    .btn-primary { background:var(--green); color:#061a17; box-shadow:0 6px 20px rgba(57,217,138,.2); }
+    .btn-danger { background:var(--red); color:#280b0a; }
+    .btn-dark { background:#152238; border:1px solid #31445f; color:#dbe5f3; }
+    .btn-outline { background:transparent; border:1px solid #3a4f6b; color:#d7e1ed; }
+    .risk-card .btn { margin-top:18px; padding:11px; font-size:12px; }
+    .bottom-nav { position:fixed; bottom:0; z-index:10; width:100%; max-width:500px; display:grid; grid-template-columns:repeat(4,1fr); gap:2px; padding:12px 7px calc(12px + env(safe-area-inset-bottom)); background:rgba(7,16,31,.94); border-top:1px solid #1a2b43; backdrop-filter:blur(16px); }
+    .nav-btn { background:none; color:#72839a; padding:4px 3px; font-size:10px; display:grid; place-items:center; gap:5px; }
+    .nav-btn.active { color:var(--green); }
+    .nav-icon { font-size:19px; line-height:1; }
+    .call-screen { text-align:center; padding-top:22px; }
+    .call-orb { width:106px; height:106px; border-radius:50%; margin:24px auto 21px; display:grid; place-items:center; background:radial-gradient(circle at 32% 25%, #344d6e, #172d49 55%, #102238); border:1px solid #416081; box-shadow:0 0 0 14px rgba(66,101,145,.08), 0 0 0 28px rgba(66,101,145,.04); }
+    .call-orb span { font:700 32px 'Space Grotesk'; color:#dce9ff; }
+    .call-label { color:var(--red); font-weight:700; letter-spacing:.15em; font-size:12px; }
+    .call-number { font:700 27px 'Space Grotesk'; margin-top:9px; letter-spacing:.04em; }
+    .call-risk { display:inline-block; margin:13px 0 23px; padding:7px 11px; border:1px solid #6c3d3c; border-radius:7px; background:#2b191d; color:#ff8b78; font-size:11px; font-weight:700; }
+    .reason-list { text-align:left; padding:17px; margin-bottom:30px; }
+    .reason { display:flex; gap:11px; align-items:center; color:#c1ccda; font-size:13px; padding:10px 0; border-bottom:1px solid #213047; }
+    .reason:last-child { border:0; }
+    .reason b { color:var(--red); font-size:15px; }
+    .call-actions { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .analysis-head { display:flex; align-items:center; gap:10px; margin:10px 0 18px; }
+    .danger-dot { width:10px; height:10px; border-radius:50%; background:var(--red); box-shadow:0 0 13px var(--red); }
+    .caller-line { color:var(--muted); font-size:13px; margin-bottom:12px; }
+    .caller-line strong { color:#e7edf6; }
+    .quote { padding:18px; color:#d5deea; font-size:14px; line-height:1.6; border-left:3px solid var(--red); }
+    .quote:before { content:'CALLER'; display:block; color:var(--red); font-weight:700; font-size:10px; letter-spacing:.12em; margin-bottom:10px; }
+    .detect { margin-top:15px; padding:17px; }
+    .detect-title { color:var(--green); font-size:11px; letter-spacing:.13em; font-weight:700; margin-bottom:10px; }
+    .checks { display:grid; grid-template-columns:1fr 1fr; gap:9px; color:#ced8e5; font-size:12px; }
+    .checks span:before { content:'✓'; color:var(--green); font-weight:700; margin-right:6px; }
+    .score { display:flex; align-items:center; justify-content:space-between; margin:18px 0 8px; color:var(--muted); font-size:12px; }
+    .score strong { color:var(--orange); font:700 20px 'Space Grotesk'; }
+    .meter { height:7px; background:#263347; border-radius:5px; overflow:hidden; }
+    .meter i { display:block; width:87%; height:100%; background:linear-gradient(90deg, var(--orange), var(--red)); border-radius:5px; }
+    .warning { padding:15px; margin:15px 0 17px; color:#ffd2a5; font-size:12px; line-height:1.45; border:1px solid #5a442e; background:#271f1b; border-radius:12px; }
+    .interceptor { position:relative; isolation:isolate; margin:4px -18px -102px; padding:2px 18px 128px; text-align:center; background:radial-gradient(circle at 50% 17%, rgba(255,105,95,.13), transparent 26%), linear-gradient(180deg, rgba(38,20,30,.68), rgba(8,15,27,.18) 55%); }
+    .interceptor:before { content:''; position:absolute; z-index:-1; top:0; left:50%; width:245px; height:245px; transform:translateX(-50%); border:1px solid rgba(255,121,96,.13); border-radius:50%; box-shadow:0 0 0 18px rgba(255,121,96,.035), 0 0 0 40px rgba(255,121,96,.022); pointer-events:none; }
+    .interceptor .eyebrow { color:#ffb36d; margin-top:13px; letter-spacing:.18em; }
+    .big-shield { position:relative; z-index:1; width:96px; height:108px; margin:8px auto 16px; filter:drop-shadow(0 0 9px rgba(255,105,95,.65)) drop-shadow(0 16px 24px rgba(0,0,0,.38)); }
+    .interceptor h1 { font-size:31px; line-height:1.02; text-shadow:0 3px 18px rgba(255,105,95,.16); }
+    .interceptor .subhead { max-width:330px; margin:14px auto 20px; color:#b9c6d6; }
+    .question { color:#fff; font:600 17px 'Space Grotesk'; line-height:1.35; margin:22px auto 17px; max-width:340px; }
+    .transaction { position:relative; text-align:left; padding:18px 19px; margin-bottom:14px; border-color:#875047; background:linear-gradient(140deg, rgba(55,28,34,.98), rgba(14,25,42,.98)); box-shadow:0 12px 25px rgba(0,0,0,.2); }
+    .transaction:before { content:'SIMULATED PAYMENT'; display:block; color:#d39176; font-size:9px; font-weight:700; letter-spacing:.16em; margin-bottom:5px; }
+    .transaction .row { padding:10px 0; border-bottom:1px solid rgba(116,83,84,.35); font-size:12px; color:#aeb9c9; }
+    .transaction .row:last-child { border:0; }
+    .transaction strong { color:#f8fafc; font-size:16px; }
+    .high { color:var(--red) !important; font-weight:700; }
+    .flagged { position:relative; text-align:left; padding:17px 17px 16px 19px; margin-bottom:18px; border-color:#45526a; background:linear-gradient(135deg, rgba(20,34,55,.98), rgba(11,22,38,.98)); }
+    .flagged:before { content:''; position:absolute; left:0; top:15px; bottom:15px; width:3px; background:var(--orange); border-radius:3px; }
+    .flagged-title { color:#ffb36d; font-size:10px; font-weight:700; letter-spacing:.16em; margin-bottom:9px; }
+    .flagged p { color:#c2cdda; font-size:12px; line-height:1.7; }
+    .flagged p:before { content:'•'; color:var(--orange); margin-right:8px; }
+    .interceptor > .btn-danger { min-height:50px; background:linear-gradient(135deg, #ff7569, #e94e55); box-shadow:0 10px 25px rgba(255,88,83,.22); }
+    .interceptor > .btn-outline { min-height:48px; color:#cbd6e4; background:rgba(17,31,51,.5); border-color:#52627a; }
+    .success { text-align:center; padding:35px 22px; margin-top:45px; border-color:#28614e; background:linear-gradient(150deg,#102b2d,#0d1728); }
+    .success-icon { font-size:34px; color:var(--green); margin-bottom:16px; }
+    .success p { color:#b6c5d4; line-height:1.5; margin:12px 0 23px; font-size:14px; }
+    .intel-top { margin-bottom:19px; }
+    .number-large { font:700 25px 'Space Grotesk'; letter-spacing:.04em; margin:9px 0 14px; }
+    .badge { display:inline-block; color:#ff9a87; border:1px solid #854d48; background:#321c22; border-radius:6px; padding:7px 10px; font-size:11px; font-weight:700; letter-spacing:.11em; }
+    .intel-card { padding:20px; margin-bottom:13px; }
+    .intel-score { display:flex; justify-content:space-between; align-items:end; }
+    .intel-score strong { font:700 38px 'Space Grotesk'; color:var(--orange); }
+    .intel-score span { color:var(--muted); font-size:12px; padding-bottom:5px; }
+    .report-count { color:#e8eef6; font:700 18px 'Space Grotesk'; margin-top:19px; }
+    .category-list { margin:17px 0; color:#bdc9d8; font-size:13px; line-height:2; }
+    .category-list div:before { content:'•'; color:var(--red); margin-right:9px; }
+    .explanation { color:#9cabc0; font-size:13px; line-height:1.5; padding-top:15px; border-top:1px solid #24334a; }
+    .last-reported { color:var(--muted); font-size:11px; margin-top:17px; }
+    .last-reported strong { color:#e5edf7; margin-left:7px; }
+    .settings-item { display:flex; justify-content:space-between; align-items:center; padding:18px 0; border-bottom:1px solid #1c2b40; color:#cbd6e3; font-size:14px; }
+    .settings-item span { color:var(--muted); font-size:12px; }
+    .modal-backdrop { display:none; position:fixed; inset:0; z-index:20; background:rgba(2,7,14,.74); padding:25px 18px; align-items:center; justify-content:center; }
+    .modal-backdrop.show { display:flex; }
+    .modal { max-width:450px; width:100%; padding:24px; background:#122037; border:1px solid #344a68; border-radius:18px; box-shadow:0 25px 70px #000; }
+    .modal h2 { font-size:20px; }
+    .modal p { color:#b9c6d6; font-size:13px; line-height:1.5; margin:11px 0 20px; }
+    .modal-actions { display:grid; grid-template-columns:1fr 1fr; gap:9px; }
+    @media (min-width:501px) { .phone { box-shadow:0 0 90px rgba(0,0,0,.35); } .bottom-nav { position:absolute; } }
+  </style>
+</head>
+<body>
+  <div class="app-shell"><div class="phone">
+    <header class="app-header"><div class="brand">SHIELD <span>AI</span></div><div class="demo-pill">DEMO MODE</div></header>
+    <main>
+      <section id="home" class="screen active">
+        <div class="eyebrow">Protection dashboard</div><h1>Good evening.</h1><p class="subhead">Your protection is active.</p>
+        <div class="status-card card"><div class="status-top"><svg class="shield-mini" viewBox="0 0 40 46" fill="none"><path d="M20 2 37 8v12c0 11-7 19-17 24C10 39 3 31 3 20V8l17-6Z" fill="#163f38" stroke="currentColor" stroke-width="2"/><path d="m11 23 6 6 12-13" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><div><div class="status-word">PROTECTED</div><div style="color:#9eb4ad;font-size:11px">MONITORING ACTIVE</div></div></div><p class="status-copy">Shield AI is monitoring for suspicious interactions and financial-risk patterns.</p></div>
+        <div class="stats"><div class="stat card"><div class="stat-value">3</div><div class="stat-label">Alerts Today</div></div><div class="stat card"><div class="stat-value">2</div><div class="stat-label">Numbers Reported</div></div><div class="stat card"><div class="stat-value"><i class="dot"></i></div><div class="stat-label">Protection Active</div></div></div>
+        <div class="risk-card card"><div class="risk-heading">LATEST RISK</div><div class="risk-title">HIGH RISK INTERACTION DETECTED</div><div class="number">024 XXX XXXX</div><button class="btn btn-danger" data-go="call">VIEW ALERT</button></div>
+      </section>
+      <section id="call" class="screen call-screen"><div class="eyebrow">Simulated incoming call</div><div class="call-orb"><span>024</span></div><div class="call-label">INCOMING CALL</div><div class="call-number">024 XXX XXXX</div><div class="call-risk">HIGH RISK — 87%</div><div class="reason-list card"><div class="reason"><b>!</b> Unknown number</div><div class="reason"><b>!</b> Reported by community</div><div class="reason"><b>!</b> Financial urgency detected</div></div><div class="call-actions"><button class="btn btn-dark" data-go="home">DECLINE</button><button class="btn btn-danger" data-go="analysis">ANSWER</button></div></section>
+      <section id="analysis" class="screen"><div class="eyebrow">Interaction analysis</div><div class="analysis-head"><i class="danger-dot"></i><h2>HIGH-RISK INTERACTION</h2></div><div class="caller-line">Caller: <strong>024 XXX XXXX</strong></div><div class="quote card">I'm calling from MTN customer service. There is a problem with your account. You need to send GH₵500 immediately to prevent your account from being blocked.</div><div class="detect card"><div class="detect-title">SHIELD AI DETECTED</div><div class="checks"><span>Financial urgency</span><span>Impersonation pattern</span><span>Unknown number</span><span>Community reports</span></div><div class="score"><span>RISK SCORE</span><strong>87 / 100</strong></div><div class="meter"><i></i></div></div><div class="warning">Do not share your PIN, OTP or send money because of this call.</div><button class="btn btn-danger" data-go="interceptor">OPEN MoMo</button></section>
+      <section id="interceptor" class="screen interceptor"><div class="eyebrow">Transaction interceptor</div><svg class="big-shield" viewBox="0 0 90 104" fill="none"><path d="M45 3 84 17v28c0 25-16 43-39 56C22 88 6 70 6 45V17L45 3Z" fill="#3b1d28" stroke="#ff695f" stroke-width="3"/><path d="M45 26v26" stroke="#ffb06a" stroke-width="5" stroke-linecap="round"/><circle cx="45" cy="65" r="3" fill="#ffb06a"/></svg><h1>PAUSE BEFORE<br>YOU SEND</h1><p class="subhead">You recently interacted with a high-risk number.<br><br>You are now attempting to make a financial action.</p><p class="question">Are you about to send money because of this interaction?</p><div class="transaction card"><div class="row"><span>Recipient</span><strong>024 XXX XXXX</strong></div><div class="row"><span>Amount</span><strong>GH₵500</strong></div><div class="row"><span>Risk</span><strong class="high">HIGH</strong></div></div><div class="flagged card"><div class="flagged-title">WHY WE FLAGGED THIS</div><p>High-risk call detected 1 minute ago</p><p>Number has community reports</p><p>Financial request detected</p><p>User moved from suspicious interaction to payment action</p></div><button class="btn btn-danger" id="cancelTransaction">CANCEL TRANSACTION</button><button class="btn btn-outline" id="understandRisk" style="margin-top:9px">I UNDERSTAND THE RISK</button></section>
+      <section id="success" class="screen"><div class="success card"><div class="success-icon">✓</div><h2>TRANSACTION CANCELLED</h2><p>You stopped before sending money.</p><button class="btn btn-primary" id="reportNumber">REPORT NUMBER</button></div></section>
+      <section id="reported" class="screen"><div class="success card"><div class="success-icon">✓</div><h2>REPORT SUBMITTED</h2><p>Your report will help protect other Shield AI users.</p><button class="btn btn-primary" data-go="intelligence">VIEW NUMBER INTELLIGENCE</button></div></section>
+      <section id="intelligence" class="screen"><div class="eyebrow">Community intelligence</div><div class="intel-top"><h1>NUMBER INTELLIGENCE</h1><div class="number-large">024 XXX XXXX</div><div class="badge">HIGH RISK</div></div><div class="intel-card card"><div class="intel-score"><span>RISK SCORE</span><strong>87 <small style="font-size:15px;color:#899ab0">/ 100</small></strong></div><div class="meter" style="margin-top:12px"><i></i></div><div class="report-count">17 REPORTS</div><div class="category-list"><div>MoMo fraud</div><div>Impersonation</div><div>Financial urgency</div></div><p class="explanation">Multiple users have reported suspicious financial requests from this number.</p><div class="last-reported">LAST REPORTED:<strong>Today</strong></div></div><button class="btn btn-danger" id="reportFromIntel">REPORT THIS NUMBER</button></section>
+      <section id="settings" class="screen"><div class="eyebrow">App controls</div><h1>Settings</h1><p class="subhead">Keep your Shield AI demo experience ready.</p><div class="card" style="padding:0 17px;margin-top:22px"><div class="settings-item">Protection status <span style="color:var(--green)">Active</span></div><div class="settings-item">Demo environment <span>Simulated only</span></div><div class="settings-item">Notifications <span style="color:var(--green)">On</span></div></div><button class="btn btn-outline" id="resetDemo" style="margin-top:20px">RESET DEMO</button></section>
+    </main>
+    <nav class="bottom-nav"><button class="nav-btn active" data-nav="home"><span class="nav-icon">⌂</span>Home</button><button class="nav-btn" data-nav="call"><span class="nav-icon">◉</span>Alerts</button><button class="nav-btn" data-nav="intelligence"><span class="nav-icon">⌕</span>Check Number</button><button class="nav-btn" data-nav="settings"><span class="nav-icon">⚙</span>Settings</button></nav>
+  </div></div>
+  <div class="modal-backdrop" id="riskModal"><div class="modal"><h2>Continue despite the risk?</h2><p>You are choosing to continue despite the high-risk warning. No real transaction will be made in this demo.</p><div class="modal-actions"><button class="btn btn-dark" id="goBack">GO BACK</button><button class="btn btn-danger" id="continueRisk">CONTINUE</button></div></div></div>
+  <script>
+    const screens = document.querySelectorAll('.screen');
+    const navButtons = document.querySelectorAll('.nav-btn');
+    function showScreen(id) {
+      screens.forEach(screen => screen.classList.toggle('active', screen.id === id));
+      navButtons.forEach(button => button.classList.toggle('active', button.dataset.nav === id));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    document.querySelectorAll('[data-go]').forEach(button => button.addEventListener('click', () => showScreen(button.dataset.go)));
+    navButtons.forEach(button => button.addEventListener('click', () => showScreen(button.dataset.nav)));
+    document.getElementById('cancelTransaction').addEventListener('click', () => showScreen('success'));
+    document.getElementById('reportNumber').addEventListener('click', () => showScreen('reported'));
+    document.getElementById('reportFromIntel').addEventListener('click', () => showScreen('reported'));
+    const modal = document.getElementById('riskModal');
+    document.getElementById('understandRisk').addEventListener('click', () => modal.classList.add('show'));
+    document.getElementById('goBack').addEventListener('click', () => modal.classList.remove('show'));
+    document.getElementById('continueRisk').addEventListener('click', () => { modal.classList.remove('show'); showScreen('home'); });
+    document.getElementById('resetDemo').addEventListener('click', () => showScreen('home'));
+  </script>
+</body>
+</html>
